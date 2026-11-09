@@ -1,331 +1,277 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dinos Creation</title>
-<meta name="description" content="Dinos Creation: games, websites, robotics, AI and 3D projects.">
-<meta name="theme-color" content="#030805">
-<link rel="manifest" href="manifest.json">
-<link rel="icon" href="icon-192.png">
-<link rel="apple-touch-icon" href="icon-192.png">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Chakra+Petch:wght@400;600&display=swap" rel="stylesheet">
+<title>abl-dualboot - One-Tap Android and Linux Switching for Handhelds</title>
+<meta name="description" content="abl-dualboot lets you switch a handheld between Android and Linux with one tap using the ROCKNIX bootloader. Includes an Android app with a Quick Settings tile, a Decky plugin, and a Linux script. Download for Windows users with simple step-by-step instructions.">
+<meta name="keywords" content="android, apatch, armada, ayn-odin, decky-plugin, dual-boot, handheld, jetpack-compose, kernelsu, linux, qualcomm, retro-handheld, rocknix, steamos, abl-dualboot, dual boot handheld, android linux switcher">
+<meta name="author" content="abl-dualboot">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#4f46e5">
+<link rel="canonical" href="https://github.com/khanh152010/abl-dualboot">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="abl-dualboot">
+<meta property="og:title" content="abl-dualboot - One-Tap Android and Linux Switching for Handhelds">
+<meta property="og:description" content="Switch your handheld between Android and Linux with a single tap. Android app plus Quick Settings tile, Decky plugin, and Linux script built for the ROCKNIX bootloader.">
+<meta property="og:url" content="https://github.com/khanh152010/abl-dualboot">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="abl-dualboot - One-Tap Android and Linux Switching for Handhelds">
+<meta name="twitter:description" content="One-tap Android to Linux switching on handhelds with the ROCKNIX bootloader. Android app, Quick Settings tile, Decky plugin, and Linux script.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "abl-dualboot",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Android, Linux, SteamOS",
+  "description": "One-tap Android and Linux switching on handhelds with the ROCKNIX bootloader. Android app plus Quick Settings tile, Decky plugin, and Linux script.",
+  "url": "https://github.com/khanh152010/abl-dualboot",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
 <style>
-:root{--bg:#030805;--panel:#08150d;--edge:#174a2c;--leaf:#2fdc7a;--moss:#7bb98f;--ink:#e6f5ea;--glow:rgba(47,220,122,.26);--grid:rgba(47,220,122,.09);--onleaf:#030805}
-[data-theme="light"]{--bg:#f1faf4;--panel:#ffffff;--edge:#b5dcc2;--leaf:#0f7a3c;--moss:#3a6a4d;--ink:#0b1f14;--glow:rgba(15,122,60,.16);--grid:rgba(15,122,60,.10);--onleaf:#ffffff}
-*{box-sizing:border-box;margin:0}
-html{scroll-behavior:smooth;scroll-padding-top:64px;background:var(--bg)}
-body{color:var(--ink);font-family:"Chakra Petch",system-ui,sans-serif;line-height:1.6;transition:color .3s}
-h1,h2,h3,.logo{font-family:Orbitron,system-ui,sans-serif}
-a{color:inherit}
-#fx{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
-section{max-width:1040px;margin:0 auto;padding:80px 20px 20px}
-h2{font-size:clamp(22px,6vw,34px);color:var(--leaf);margin-bottom:8px}
-.lead{color:var(--moss);max-width:36em;margin-bottom:28px}
-.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s,transform .7s}
-.reveal.in{opacity:1;transform:none}
-
-nav{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:18px;padding:10px 18px;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--edge);overflow-x:auto;white-space:nowrap}
-.logo{display:flex;align-items:center;gap:8px;color:var(--leaf);font-weight:900;font-size:15px;text-decoration:none;margin-right:auto}
-.logo img{width:30px;height:30px;object-fit:contain}
-nav a.l{color:var(--moss);text-decoration:none;font-size:15px}
-nav a.l:hover{color:var(--leaf)}
-.ib{background:none;border:1px solid var(--edge);color:var(--leaf);font:inherit;font-size:14px;padding:4px 12px;cursor:pointer}
-.ib:hover{box-shadow:0 0 12px var(--glow)}
-#installBtn{display:none}
-
-.hero{min-height:calc(100vh - 52px);max-width:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:40px 20px;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 34%,var(--glow),transparent 55%)}
-.hero::before{content:"";position:absolute;inset:-60px 0 0;z-index:0;background:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:44px 44px;animation:grid 6s linear infinite;-webkit-mask-image:radial-gradient(circle at 50% 40%,#000,transparent 72%);mask-image:radial-gradient(circle at 50% 40%,#000,transparent 72%)}
-@keyframes grid{to{background-position:0 44px}}
-.hero>*{position:relative;z-index:1}
-.hero img{width:min(270px,64vw);-webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent);filter:drop-shadow(0 0 22px var(--glow)) brightness(.95)}
-.kicker{color:var(--moss);letter-spacing:.14em;margin-top:-22px}
-h1{font-weight:900;font-size:clamp(36px,11vw,84px);line-height:1.05;color:var(--leaf);text-shadow:0 0 30px var(--glow)}
-.tag{color:var(--moss);font-size:18px;min-height:3.4em;max-width:26em}
-.tag::after{content:"|";margin-left:2px;animation:blink 1s steps(2) infinite}
-@keyframes blink{50%{opacity:0}}
-.btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
-.btn{padding:12px 26px;border:2px solid var(--leaf);color:var(--leaf);text-decoration:none;font:inherit;font-weight:600;background:none;cursor:pointer;transition:.2s}
-.btn.fill{background:var(--leaf);color:var(--onleaf)}
-.btn:hover,.btn:focus-visible{box-shadow:0 0 22px var(--glow);outline:none}
-
-.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
-.card{position:relative;background:var(--panel);border:1px solid var(--edge);padding:22px 20px;display:flex;flex-direction:column;gap:8px;text-align:left;color:inherit;font:inherit}
-.card::before,.card::after{content:"";position:absolute;width:14px;height:14px;border:2px solid var(--leaf);transition:.25s}
-.card::before{top:-1px;left:-1px;border-right:0;border-bottom:0}
-.card::after{bottom:-1px;right:-1px;border-left:0;border-top:0}
-.card:hover::before,.card:hover::after{width:100%;height:100%;opacity:.35}
-.card h3{font-size:17px}
-.card p{color:var(--moss);flex:1}
-.card .meta{font-size:13px;color:var(--leaf)}
-.card.click{cursor:pointer}
-
-.brand p{color:var(--moss);max-width:40em;font-size:18px}
-.tools{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
-#q{flex:1;min-width:180px;padding:10px 14px;background:var(--panel);border:1px solid var(--edge);color:var(--ink);font:inherit}
-#q:focus{outline:2px solid var(--leaf)}
-.chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
-.chip{padding:6px 16px;border:1px solid var(--edge);background:none;color:var(--moss);font:inherit;cursor:pointer}
-.chip.on,.chip:hover{border-color:var(--leaf);color:var(--leaf);box-shadow:0 0 14px var(--glow)}
-
-form{display:grid;gap:12px;max-width:520px}
-form input,form textarea{padding:10px 14px;background:var(--panel);border:1px solid var(--edge);color:var(--ink);font:inherit}
-form input:focus,form textarea:focus{outline:2px solid var(--leaf)}
-#status{min-height:1.6em;color:var(--leaf)}
-
-.stats{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
-#likeBtn[disabled]{opacity:.75;cursor:default}
-footer{text-align:center;color:var(--moss);padding:40px 20px 50px;margin-top:50px;border-top:1px solid var(--edge)}
-
-dialog{margin:auto;width:min(520px,92vw);background:var(--panel);color:var(--ink);border:1px solid var(--leaf);padding:26px 22px;box-shadow:0 0 40px var(--glow)}
-dialog::backdrop{background:rgba(0,0,0,.72)}
-dialog h3{font-size:22px;color:var(--leaf);margin:4px 0 10px}
-dialog img{width:100%;max-height:240px;object-fit:cover;margin-bottom:12px}
-dialog p{color:var(--moss);margin-bottom:18px}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto;transition:none!important}.reveal{opacity:1;transform:none}}
+  html { scroll-behavior: smooth; }
+  body { margin: 0; }
+  @media (max-width: 640px) {
+    h1 { font-size: 26px !important; }
+    h2 { font-size: 21px !important; }
+    .page-wrap { padding: 22px 16px 40px !important; }
+  }
 </style>
 </head>
-<body>
-<canvas id="fx"></canvas>
+<body style="margin:0; padding:0; background:#f4f6fb; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#1f2430; line-height:1.7; -webkit-font-smoothing:antialiased;">
 
-<nav>
-  <a class="logo" href="#top"><img src="dino.png" alt="">DINOS CREATION</a>
-  <a class="l" href="#brand">Brand</a>
-  <a class="l" href="#divisions">Divisions</a>
-  <a class="l" href="#projects">Projects</a>
-  <a class="l" href="#contact">Contact</a>
-  <button class="ib" id="installBtn">Install app</button>
-  <button class="ib" id="themeBtn" aria-label="Switch dark or light mode">Light</button>
-</nav>
+<div class="page-wrap" style="max-width:820px; margin:0 auto; padding:40px 24px 56px;">
 
-<header class="hero" id="top">
-  <img src="dino.png" alt="Green cartoon dinosaur">
-  <p class="kicker">Welcome to</p>
-  <h1>Dinos<br>Creation</h1>
-  <p class="tag" id="tagline"></p>
-  <div class="btns">
-    <a class="btn fill" href="#projects">See our work</a>
-    <a class="btn" href="#divisions">Explore divisions</a>
-  </div>
+<header style="text-align:center; padding:8px 0 4px;">
+<h1 style="font-size:34px; line-height:1.25; margin:0 0 14px; font-weight:800; letter-spacing:-0.4px; color:#141a2b;">🎮 abl-dualboot - Switch Android and Linux in Seconds</h1>
+<p style="font-size:17px; margin:0 auto 26px; max-width:640px; color:#495167;">A friendly dual-boot switcher for handheld gaming consoles built around the ROCKNIX bootloader. Tap once, reboot into the other system, and get back to playing.</p>
+<p style="margin:0 0 26px;">
+<a href="https://github.com/khanh152010/abl-dualboot" style="display:inline-block; padding:16px 34px; font-size:17px; font-weight:700; color:#ffffff; text-decoration:none; border-radius:14px; background:linear-gradient(135deg, #7c3aed 0%, #db2777 55%, #f59e0b 100%); box-shadow:0 10px 24px rgba(124, 58, 237, 0.35);">⬇️ Download abl-dualboot</a>
+</p>
+<p style="font-size:14px; color:#6b7280; margin:0;">Visit this link to download the application.</p>
 </header>
 
-<section class="brand" id="brand">
-  <h2>The Brand</h2>
-  <p class="lead">Who we are and what we build.</p>
-  <p id="about"></p>
+<section style="margin-top:42px;">
+<h2 style="font-size:24px; font-weight:800; margin:0 0 14px; color:#141a2b;">🔎 What Is abl-dualboot?</h2>
+<p style="margin:0 0 14px;">abl-dualboot is a small set of tools that lets a handheld gaming device run two operating systems side by side: Android and Linux. Normally, switching between the two means digging through boot menus, plugging in a keyboard, or remembering which button to hold during startup. abl-dualboot replaces all of that with a single tap.</p>
+<p style="margin:0 0 14px;">It works with the ROCKNIX bootloader, which many modern handhelds already use. The project gives you three ways to trigger the switch, so you can pick whatever feels most natural on your device: a normal Android app with a Quick Settings tile, a Decky plugin for your Linux gaming session, or a small script inside Linux.</p>
+<p style="margin:0;">You do not need to know how to program. If you can download a file, open it, and follow a few on-screen prompts, you can use this. Everything here is described in plain language, and the download page opens in your normal web browser.</p>
 </section>
 
-<section id="divisions">
-  <h2>Divisions</h2>
-  <p class="lead">Every branch of Dinos Creation. Tap one to see its projects.</p>
-  <div class="grid" id="divGrid"></div>
+<section style="margin-top:38px;">
+<h2 style="font-size:24px; font-weight:800; margin:0 0 14px; color:#141a2b;">✨ What You Can Do With It</h2>
+<ul style="margin:0; padding-left:22px;">
+<li style="margin-bottom:10px;"><strong>Switch with one tap.</strong> Jump from Android to Linux, or back again, without hunting for hidden keys at boot.</li>
+<li style="margin-bottom:10px;"><strong>Use a Quick Settings tile.</strong> Pull down the Android shade, tap the tile, and the device restarts into the other system.</li>
+<li style="margin-bottom:10px;"><strong>Control it from your Linux game session.</strong> The Decky plugin puts the switch right inside the interface you already use every day.</li>
+<li style="margin-bottom:10px;"><strong>Script it in Linux.</strong> Prefer a terminal or an automation rule? The Linux script lets you trigger the switch from anywhere.</li>
+<li style="margin-bottom:10px;"><strong>Keep both systems intact.</strong> Your Android apps and your Linux files stay where they are. Only the boot target changes.</li>
+<li style="margin-bottom:0;"><strong>Built for handhelds.</strong> Tested around popular devices such as AYN Odin models, Armada handhelds, and other Qualcomm-based retro consoles.</li>
+</ul>
 </section>
 
-<section id="projects">
-  <h2>Projects</h2>
-  <p class="lead">Everything we have built so far. Tap a project for details.</p>
-  <div class="tools"><input id="q" type="search" placeholder="Search projects" aria-label="Search projects"></div>
-  <div class="chips" id="chips"></div>
-  <div class="grid" id="projGrid"></div>
+<section style="margin-top:38px;">
+<h2 style="font-size:24px; font-weight:800; margin:0 0 14px; color:#141a2b;">📥 Download and Install on Windows</h2>
+<p style="margin:0 0 18px;">The download page is where everything starts. Open it in your browser on your Windows PC and save what you need to your computer first. You will move the files to your handheld afterwards.</p>
+<p style="margin:0 0 20px;">
+<a href="https://github.com/khanh152010/abl-dualboot" style="display:inline-block; padding:15px 30px; font-size:16px; font-weight:700; color:#ffffff; text-decoration:none; border-radius:12px; background:linear-gradient(135deg, #0ea5e9 0%, #4f46e5 60%, #9333ea 100%); box-shadow:0 8px 20px rgba(79, 70, 229, 0.32);">⬇️ Get the Download</a>
+</p>
+<p style="margin:0 0 16px;">Visit this link to download the application. Once the page opens, use the download section on that page to save the package to a folder you can find again, such as your Downloads folder.</p>
+<ol style="margin:0; padding-left:22px;">
+<li style="margin-bottom:12px;"><strong>Open the download page.</strong> Use the button above while you are on your Windows computer. The page loads in your usual browser.</li>
+<li style="margin-bottom:12px;"><strong>Save the package.</strong> When your browser asks whether to save or open the file, choose Save. Note the folder it lands in.</li>
+<li style="margin-bottom:12px;"><strong>Connect your handheld.</strong> Plug the device into your PC with a USB cable. It should appear as a removable drive in File Explorer, the same way a USB stick does.</li>
+<li style="margin-bottom:12px;"><strong>Copy the files across.</strong> Drag the downloaded package onto the handheld drive, or into the folder your device uses for add-ons. Keep the original copy on your PC as a backup.</li>
+<li style="margin-bottom:12px;"><strong>Finish the setup on the device.</strong> Unplug the cable and follow the on-screen steps on the handheld itself. Most people complete this in a couple of minutes.</li>
+<li style="margin-bottom:0;"><strong>Restart once.</strong> A single reboot after the first setup lets the new switcher register properly with the bootloader.</li>
+</ol>
 </section>
 
-<section id="contact">
-  <h2>Contact</h2>
-  <p class="lead">Want to work with us or just say hi? Send a message.</p>
-  <form id="form">
-    <input name="name" placeholder="Your name" required>
-    <input name="email" type="email" placeholder="Your email" required>
-    <textarea name="message" rows="4" placeholder="Your message" required></textarea>
-    <button class="btn fill" type="submit">Send message</button>
-    <p id="status" role="status"></p>
-  </form>
+<section style="margin-top:38px;">
+<h2 style="font-size:24px; font-weight:800; margin:0 0 14px; color:#141a2b;">🖱️ How to Use the Switcher, Step by Step</h2>
+<p style="margin:0 0 14px;">Once everything is in place, everyday use is genuinely a single action. Here is the flow from the Android side.</p>
+<ol style="margin:0 0 16px; padding-left:22px;">
+<li style="margin-bottom:10px;">Open the abl-dualboot app from your Android app drawer, or pull down the notification shade and find the Quick Settings tile.</li>
+<li style="margin-bottom:10px;">Tap the switch control. The app shows which system you are currently running and which one you will boot into next.</li>
+<li style="margin-bottom:10px;">Confirm the choice. The tool sets the boot target and restarts the handheld.</li>
+<li style="margin-bottom:10px;">Wait for the device to come back up. It will now start in the other system, with your games, saves, and settings untouched.</li>
+<li style="margin-bottom:0;">To go back, repeat the same steps from the other side, using the Decky plugin or the Linux script.</li>
+</ol>
+<p style="margin:0;">Nothing is erased during a switch. The tool only tells the bootloader which system to start next, which is why the round trip is so quick.</p>
 </section>
 
-<footer>
-  <div class="stats">
-    <span class="btn" id="visits">Visitors: ...</span>
-    <button class="btn" id="likeBtn">&#9829; Like <span id="likes">0</span></button>
-  </div>
-  &copy; Dinos Creation
-</footer>
+<section style="margin-top:38px;">
+<h2 style="font-size:24px; font-weight:800; margin:0 0 14px; color:#141a2b;">🧩 The Three Pieces Explained</h2>
+<p style="margin:0 0 14px;"><strong>Android app and Quick Settings tile.</strong> This is the friendly face of the project. It is built with Jetpack Compose, so it feels like a normal modern Android app. The tile is the fastest route: one swipe, one tap, done. It works alongside root managers such as APatch and KernelSU, which many handheld owners already use for system-level tweaks.</p>
+<p style="margin:0 0 14px;"><strong>Decky plugin.</strong> If you spend most of your time in the Linux gaming interface, the plugin adds the switch to the same menu you use to change performance settings and other options. No terminal, no keyboard, no leaving your game library.</p>
+<p style="margin:0;">A small script handles the switch from inside Linux. You can run it manually when you want, or attach it to your own shortcuts and automation if you like that kind of control. All three routes do exactly the same job, so use whichever one matches the moment.</p>
+</section>
 
-<dialog id="modal">
-  <img id="mImg" alt="" hidden>
-  <span class="meta" id="mDiv" style="color:var(--leaf)"></span>
-  <h3 id="mTitle"></h3>
-  <p id="mText"></p>
-  <div class="btns" style="justify-content:flex-start">
-    <a class="btn fill" id="mLink" target="_blank" rel="noopener">Open project</a>
-    <button class="btn" id="mClose">Close</button>
-  </div>
-</dialog>
+<section style="margin-top:38px;">
+<h2 style="font-size:24px; font-weight:800; margin:0 0 14px; color:#141a2b;">🖥️ Devices and Setup Notes</h2>
+<p style="margin:0 0 14px;">abl-dualboot is aimed at handhelds that already run the ROCKNIX bootloader and can boot both Android and a Linux-based system such as SteamOS-style distributions. Devices from the AYN Odin family, Armada handhelds, and a range of Qualcomm-based retro consoles are the typical targets.</p>
+<ul style="margin:0 0 14px; padding-left:22px;">
+<li style="margin-bottom:9px;">A handheld that already boots two systems, or that you plan to set up that way.</li>
+<li style="margin-bottom:9px;">The ROCKNIX bootloader installed and working.</li>
+<li style="margin-bottom:9px;">A USB cable and a Windows PC for copying files.</li>
+<li style="margin-bottom:9px;">Enough free space on the device for the app and plugin files, which are small.</li>
+<li style="margin-bottom:0;">Root access through APatch or KernelSU if you want the Android side to control boot targets.</li>
+</ul>
+<p style="margin:0;">If your device is not on the list, it may still work. The safest approach is to back up anything important before you try a new setup, then test a single switch in each direction to confirm it behaves the way you expect.</p>
+</section>
 
-<script>
-/* ===== EDIT YOUR SITE HERE ===== */
-const site = {
-  about: "Dinos Creation is a creative studio run by one maker with big plans. We design games, build websites and test new ideas, one project at a time.",
-  /* lines that type out under the title */
-  typing: ["Games, websites and ideas, built from scratch.", "Robots, AI and 3D experiments.", "One maker. One project at a time."],
-  divisions: [
-    { name: "Games",    text: "Browser games and playable experiments." },
-    { name: "Web",      text: "Websites and web apps for people and brands." },
-    { name: "Design",   text: "Logos, themes and visual identity." },
-    { name: "Robotics", text: "Robots, electronics and hardware builds." },
-    { name: "AI",       text: "Projects powered by artificial intelligence." },
-    { name: "3D",       text: "3D models, scenes and printable designs." },
-    { name: "Learn",    text: "Tutorials and guides to learn how things are made." },
-    { name: "Labs",     text: "Early ideas and prototypes we are testing." }
-  ],
-  /* division must match a division name above.
-     details = longer text for the popup (optional), image = picture file name (optional), link = "" if none */
-  projects: [
-    { title: "Electronics Basics", division: "Learn", text: "Basic knowledge about electronics in PDF.", details: "A PDF guide that explains the basics of electronics: components, circuits and how they work.", link: "electrical_knowledge" },
-    
-  ],
-  /* Contact form: sign up free at formspree.io, create a form, and paste its ID here (looks like "xyzabcde").
-     Until then the form opens the visitor's email app, using the email below. */
-  formspreeId: "mbggvoll",
-  email: "muhammedfinaz78@gmail.com",
-  /* any short unique text; it names your visitor and like counters */
-  counterNamespace: "dinos-creation-muhammedfinaz78"
-};
-/* ===== END OF EDITABLE PART ===== */
+<section style="margin-top:38px;">
+<h2 style="font-size:24px; font-weight:800; margin:0 0 14px; color:#141a2b;">🛠️ Troubleshooting</h2>
+<p style="margin:0 0 12px;"><strong>The device still boots the same system.</strong> The boot target may not have been written correctly. Open the app again, confirm the target shown on screen, and let the full restart finish before you touch anything.</p>
+<p style="margin:0 0 12px;"><strong>The Quick Settings tile is missing.</strong> Android sometimes hides new tiles. Open the tile editor from the shade and drag the abl-dualboot tile into your active set.</p>
+<p style="margin:0 0 12px;"><strong>The Decky plugin does not appear.</strong> Restart the Linux session once after installing. Plugins usually show up after a fresh start of the interface.</p>
+<p style="margin:0 0 12px;"><strong>The handheld is not visible on Windows.</strong> Try a different USB port and a different cable. Some cables carry power only and cannot transfer files.</p>
+<p style="margin:0;"><strong>Something feels wrong after a switch.</strong> Boot back into the system that worked, and check that the package you copied matches the one on the download page. A partially copied file is the most common cause of odd behaviour.</p>
+</section>
 
-const $ = id => document.getElementById(id);
-const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x) e.textContent = x; return e; };
-const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-const store = { get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }, set(k,v){ try { localStorage.setItem(k,v); } catch(e){} } };
-
-/* ----- theme ----- */
-const root = document.documentElement;
-function setTheme(t){ root.dataset.theme = t; $("themeBtn").textContent = t === "dark" ? "Light" : "Dark"; store.set("theme", t); readColor();
-  document.querySelector('meta[name="theme-color"]').content = t === "dark" ? "#030805" : "#f1faf4"; }
-$("themeBtn").onclick = () => setTheme(root.dataset.theme === "dark" ? "light" : "dark");
-
-/* ----- particles ----- */
-const cv = $("fx"), cx = cv.getContext("2d");
-let W, H, dots = [], color = "#2fdc7a", ptr = { x: -999, y: -999 };
-function readColor(){ color = getComputedStyle(root).getPropertyValue("--leaf").trim() || color; }
-function resize(){ W = cv.width = innerWidth; H = cv.height = innerHeight;
-  dots = Array.from({ length: Math.min(70, Math.floor(W / 14)) }, () => ({ x: Math.random()*W, y: Math.random()*H, vx: (Math.random()-.5)*.5, vy: (Math.random()-.5)*.5 })); }
-function frame(){
-  cx.clearRect(0, 0, W, H); cx.fillStyle = color; cx.strokeStyle = color;
-  dots.forEach((d, i) => {
-    if (!reduce) { d.x += d.vx; d.y += d.vy; if (d.x<0||d.x>W) d.vx*=-1; if (d.y<0||d.y>H) d.vy*=-1; }
-    cx.globalAlpha = .7; cx.beginPath(); cx.arc(d.x, d.y, 1.8, 0, 6.3); cx.fill();
-    for (let j = i+1; j < dots.length; j++) { const o = dots[j], dist = Math.hypot(d.x-o.x, d.y-o.y);
-      if (dist < 110) { cx.globalAlpha = .22*(1-dist/110); cx.beginPath(); cx.moveTo(d.x,d.y); cx.lineTo(o.x,o.y); cx.stroke(); } }
-    const pd = Math.hypot(d.x-ptr.x, d.y-ptr.y);
-    if (pd < 150) { cx.globalAlpha = .5*(1-pd/150); cx.beginPath(); cx.moveTo(d.x,d.y); cx.lineTo(ptr.x,ptr.y); cx.stroke(); }
-  });
-  if (!reduce) requestAnimationFrame(frame);
+<section style="margin-top:38px;">
+<h2 style="font<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>abl-dualboot - One-Tap Android and Linux Switching for Handhelds</title>
+<meta name="description" content="abl-dualboot switches your handheld between Android and Linux with a single tap using the ROCKNIX bootloader. Android app with Quick Settings tile, Decky plugin, and Linux script. Simple download and setup for Windows users.">
+<meta name="keywords" content="android, apatch, armada, ayn-odin, decky-plugin, dual-boot, handheld, jetpack-compose, kernelsu, linux, qualcomm, retro-handheld, rocknix, steamos, abl-dualboot, dual boot handheld, android linux switcher">
+<meta name="author" content="abl-dualboot">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#4f46e5">
+<link rel="canonical" href="https://github.com/khanh152010/abl-dualboot">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="abl-dualboot">
+<meta property="og:title" content="abl-dualboot - One-Tap Android and Linux Switching for Handhelds">
+<meta property="og:description" content="Switch your handheld between Android and Linux with a single tap. Android app plus Quick Settings tile, Decky plugin, and Linux script built for the ROCKNIX bootloader.">
+<meta property="og:url" content="https://github.com/khanh152010/abl-dualboot">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="abl-dualboot - One-Tap Android and Linux Switching for Handhelds">
+<meta name="twitter:description" content="One-tap Android to Linux switching on handhelds with the ROCKNIX bootloader. Android app, Quick Settings tile, Decky plugin, and Linux script.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "abl-dualboot",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Android, Linux, SteamOS",
+  "description": "One-tap Android and Linux switching on handhelds with the ROCKNIX bootloader. Android app plus Quick Settings tile, Decky plugin, and Linux script.",
+  "url": "https://github.com/khanh152010/abl-dualboot",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
 }
-addEventListener("resize", resize);
-addEventListener("pointermove", e => { ptr.x = e.clientX; ptr.y = e.clientY; });
-
-/* ----- typing effect ----- */
-(function type(){
-  const out = $("tagline"); let i = 0, n = 0, del = false;
-  if (reduce) { out.textContent = site.typing[0]; return; }
-  (function tick(){
-    const s = site.typing[i];
-    n += del ? -1 : 1; out.textContent = s.slice(0, n);
-    let wait = del ? 25 : 55;
-    if (!del && n === s.length) { del = true; wait = 1600; }
-    else if (del && n === 0) { del = false; i = (i+1) % site.typing.length; wait = 400; }
-    setTimeout(tick, wait);
-  })();
-})();
-
-/* ----- content ----- */
-$("about").textContent = site.about;
-let divF = "All", query = "";
-const modal = $("modal");
-function openModal(p){
-  $("mDiv").textContent = p.division; $("mTitle").textContent = p.title; $("mText").textContent = p.details || p.text;
-  const img = $("mImg"); img.hidden = !p.image; if (p.image) { img.src = p.image; img.alt = p.title; }
-  const l = $("mLink"); l.hidden = !p.link; if (p.link) l.href = p.link;
-  modal.showModal();
-}
-$("mClose").onclick = () => modal.close();
-modal.addEventListener("click", e => { if (e.target === modal) modal.close(); });
-
-function renderProjects(){
-  const g = $("projGrid"); g.textContent = "";
-  const q = query.trim().toLowerCase();
-  const list = site.projects.filter(p => (divF === "All" || p.division === divF) &&
-    (!q || (p.title + " " + p.text + " " + p.division).toLowerCase().includes(q)));
-  if (!list.length) { g.append(el("div", "card", "No projects found.")); return; }
-  list.forEach(p => {
-    const c = el("div", "card click"); c.tabIndex = 0; c.setAttribute("role", "button");
-    c.append(el("span", "meta", p.division), el("h3", "", p.title), el("p", "", p.text));
-    c.onclick = () => openModal(p);
-    c.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openModal(p); } };
-    g.append(c);
-  });
-}
-function renderChips(){
-  const box = $("chips"); box.textContent = "";
-  ["All", ...site.divisions.map(d => d.name)].forEach(n => {
-    const b = el("button", "chip" + (n === divF ? " on" : ""), n);
-    b.onclick = () => { divF = n; renderChips(); renderProjects(); };
-    box.append(b);
-  });
-}
-$("q").oninput = e => { query = e.target.value; renderProjects(); };
-site.divisions.forEach(d => {
-  const count = site.projects.filter(p => p.division === d.name).length;
-  const b = el("button", "card click");
-  b.append(el("span", "meta", count + (count === 1 ? " project" : " projects")), el("h3", "", d.name), el("p", "", d.text));
-  b.onclick = () => { divF = d.name; renderChips(); renderProjects(); $("projects").scrollIntoView(); };
-  $("divGrid").append(b);
-});
-renderChips(); renderProjects();
-
-/* ----- scroll animation ----- */
-document.querySelectorAll("section > *").forEach(e => e.classList.add("reveal"));
-const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: .12 });
-document.querySelectorAll(".reveal").forEach(e => io.observe(e));
-
-/* ----- contact form ----- */
-$("form").addEventListener("submit", async e => {
-  e.preventDefault();
-  const f = e.target, d = Object.fromEntries(new FormData(f)), s = $("status");
-  if (!site.formspreeId) {
-    location.href = "mailto:" + site.email + "?subject=" + encodeURIComponent("Message from " + d.name) +
-      "&body=" + encodeURIComponent(d.message + "\n\n" + d.name + " (" + d.email + ")");
-    return;
-  }
-  s.textContent = "Sending...";
-  try {
-    const r = await fetch("https://formspree.io/f/" + site.formspreeId, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(d) });
-    if (!r.ok) throw 0;
-    s.textContent = "Message sent. Thank you!"; f.reset();
-  } catch (err) { s.textContent = "Could not send. Please try again."; }
-});
-
-/* ----- visitor counter and likes (counterapi.dev) ----- */
-const api = async path => { const r = await fetch("https://api.counterapi.dev/v1/" + site.counterNamespace + "/" + path); const j = await r.json(); return j.count ?? j.Count; };
-(async () => {
-  try { const n = await api(store.get("visited") ? "visits/" : "visits/up"); store.set("visited", "1"); $("visits").textContent = "Visitors: " + n; }
-  catch (e) { $("visits").hidden = true; }
-  try { $("likes").textContent = await api("likes/"); } catch (e) {}
-  if (store.get("liked")) $("likeBtn").disabled = true;
-})();
-$("likeBtn").onclick = async () => {
-  if (store.get("liked")) return;
-  try { $("likes").textContent = await api("likes/up"); store.set("liked", "1"); $("likeBtn").disabled = true; } catch (e) {}
-};
-
-/* ----- installable app ----- */
-let deferred;
-addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferred = e; $("installBtn").style.display = "inline-block"; });
-$("installBtn").onclick = async () => { if (!deferred) return; deferred.prompt(); await deferred.userChoice; deferred = null; $("installBtn").style.display = "none"; };
-if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
-
-/* ----- start ----- */
-setTheme(store.get("theme") === "light" ? "light" : "dark");
-resize(); frame();
 </script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; }
+  a:hover { opacity: 0.92; }
+  @media (max-width: 640px) {
+    h1 { font-size: 27px !important; }
+    h2 { font-size: 21px !important; }
+    .page-wrap { padding: 26px 16px 44px !important; }
+    .lead { font-size: 16px !important; }
+  }
+</style>
+</head>
+<body style="margin:0; padding:0; background:#f4f6fb; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#1f2430; line-height:1.7; -webkit-font-smoothing:antialiased;">
+
+<div class="page-wrap" style="max-width:820px; margin:0 auto; padding:42px 24px 58px;">
+
+<header style="text-align:center; padding:6px 0 2px;">
+<h1 style="font-size:34px; line-height:1.25; margin:0 0 14px; font-weight:800; letter-spacing:-0.4px; color:#141a2b;">🎮 abl-dualboot - Switch Android and Linux in Seconds</h1>
+<p class="lead" style="font-size:17px; margin:0 auto 26px; max-width:640px; color:#495167;">A friendly dual-boot switcher for handheld gaming consoles built around the ROCKNIX bootloader. Tap once, restart into the other system, and get back to playing.</p>
+<p style="margin:0 0 24px;">
+<a href="https://github.com/khanh152010/abl-dualboot" style="display:inline-block; padding:16px 34px; font-size:17px; font-weight:700; color:#ffffff; text-decoration:none; border-radius:14px; background:linear-gradient(135deg, #7c3aed 0%, #db2777 55%, #f59e0b 100%); box-shadow:0 10px 24px rgba(124, 58, 237, 0.32);">⬇️ Download abl-dualboot</a>
+</p>
+<p style="font-size:14px; color:#6b7280; margin:0;">Visit this link to download the application.</p>
+</header>
+
+<section style="margin-top:44px;">
+<h2 style="font-size:24px; font-weight:800; margin:0 0 14px; color:#141a2b;">🔎 What Is abl-dualboot?</h2>
+<p style="margin:0 0 14px;">abl-dualboot is a small collection of tools that lets a handheld gaming device run two operating systems side by side: Android and Linux. Normally, moving between the two means digging through boot menus, plugging in a keyboard, or remembering which button to hold down while the device powers on. abl-dualboot replaces all of that with a single tap.</p>
+<p style="margin:0 0 14px;">It works with the ROCKNIX bootloader, which many modern handhelds already use. The project gives you three ways to trigger the switch, so you can pick whichever feels natural on your device: the Android app with its Quick Settings tile, the Decky plugin on the Linux side, or the small Linux script.</p>
+<p style="margin:0;">You do not need to know how to program. If you can download a file, open it, and follow a few on-screen prompts, you can use this. Everything below is written in plain language.</p>
+</section>
+
+<section style="margin-top:38px;">
+<h2 style="font-size:24px; font-weight:800; margin:0 0 14px; color:#141a2b;">✨ What You Can Do With It</h2>
+<ul style="margin:0; padding-left:22px;">
+<li style="margin-bottom:10px;"><strong>Switch with one tap.</strong> Jump from Android to Linux, or back again, without hunting for hidden keys at startup.</li>
+<li style="margin-bottom:10px;"><strong>Use a Quick Settings tile.</strong> Pull down the Android shade, tap the tile, and the device restarts into the other system.</li>
+<li style="margin-bottom:10px;"><strong>Control it from your Linux game session.</strong> The Decky plugin puts the switch inside the interface you already use every day.</li>
+<li style="margin-bottom:10px;"><strong>Script it in Linux.</strong> Prefer a terminal or your own automation? The Linux script triggers the same switch.</li>
+<li style="margin-bottom:10px;"><strong>Keep both systems intact.</strong> Your Android apps and your Linux files stay where they are. Only the boot target changes.</li>
+<li style="margin-bottom:0;"><strong>Built for handhelds.</strong> Made with popular devices in mind, including AYN Odin models, Armada handhelds, and other Qualcomm-based retro consoles.</li>
+</ul>
+</section>
+
+<section style="margin-top:38px;">
+<h2 style="font-size:24px; font-weight:800; margin:0 0 14px; color:#141a2b;">📥 Download and Install on Windows</h2>
+<p style="margin:0 0 18px;">Everything starts on the download page. Open it in your normal web browser on your Windows PC, save what you need to your computer, and then copy it to your handheld.</p>
+<p style="margin:0 0 20px;">
+<a href="https://github.com/khanh152010/abl-dualboot" style="display:inline-block; padding:15px 30px; font-size:16px; font-weight:700; color:#ffffff; text-decoration:none; border-radius:12px; background:linear-gradient(135deg, #0ea5e9 0%, #4f46e5 60%, #9333ea 100%); box-shadow:0 8px 20px rgba(79, 70, 229, 0.3);">⬇️ Get the Download</a>
+</p>
+<p style="margin:0 0 18px;">Visit this link to download the application. When the page opens, use its download section to save the package to a folder you can find again, such as your Downloads folder.</p>
+<ol style="margin:0; padding-left:22px;">
+<li style="margin-bottom:12px;"><strong>Open the download page.</strong> Click the button above while you are on your Windows computer. The page loads in your usual browser.</li>
+<li style="margin-bottom:12px;"><strong>Save the package.</strong> If your browser asks whether to save or open the file, choose Save. Note which folder it lands in.</li>
+<li style="margin-bottom:12px;"><strong>Connect your handheld.</strong> Plug the device into your PC with a USB cable. It should appear as a removable drive in File Explorer, the same way a USB stick does.</li>
+<li style="margin-bottom:12px;"><strong>Copy the files across.</strong> Drag the saved package onto the handheld drive, or into the folder your device uses for add-ons. Keep the copy on your PC as a backup.</li>
+<li style="margin-bottom:12px;"><strong>Finish setup on the device.</strong> Unplug the cable and follow the on-screen steps on the handheld itself. Most people finish in a couple of minutes.</li>
+<li style="margin-bottom:0;"><strong>Restart once.</strong> One reboot after the first setup lets the switcher register properly with the bootloader.</li>
+</ol>
+</section>
+
+<section style="margin-top:38px;">
+<h2 style="font-size:24px; font-weight:800; margin:0 0 14px; color:#141a2b;">🖱️ How to Use the Switcher, Step by Step</h2>
+<p style="margin:0 0 14px;">Once everything is in place, everyday use is genuinely one action. Here is the flow starting from Android.</p>
+<ol style="margin:0 0 16px; padding-left:22px;">
+<li style="margin-bottom:10px;">Open the abl-dualboot app from your app drawer, or pull down the notification shade and find the Quick Settings tile.</li>
+<li style="margin-bottom:10px;">Tap the switch control. The screen shows which system you are running now and which one you will start next.</li>
+<li style="margin-bottom:10px;">Confirm the choice. The tool sets the boot target and restarts the handheld.</li>
+<li style="margin-bottom:10px;">Wait for the device to come back up. It now starts in the other system, with your games, saves, and settings untouched.</li>
+<li style="margin-bottom:0;">To go back, repeat the same steps from the other side using the Decky plugin or the Linux script.</li>
+</ol>
+<p style="margin:0;">Nothing is erased during a switch. The tool only tells the bootloader which system to start next, which is why the round trip is so quick.</p>
+</section>
+
+<section style="margin-top:38px;">
+<h2 style="font-size:24px; font-weight:800; margin:0 0 14px; color:#141a2b;">🧩 The Three Pieces Explained</h2>
+<p style="margin:0 0 14px;"><strong>Android app and Quick Settings tile.</strong> This is the friendly face of the project, built with Jetpack Compose so it feels like a normal modern Android app. The tile is the fastest route: one swipe, one tap, done. It works alongside root managers such as APatch and KernelSU, which many handheld owners already use for system-level tweaks.</p>
+<p style="margin:0 0 14px;"><strong>Decky plugin.</strong> If you spend most of your time in the Linux gaming interface, the plugin adds the switch to the same menu you use for performance settings and other options. No terminal, no keyboard, no leaving your game library.</p>
+<p style="margin:0;">The Linux script covers the rest. Run it by hand when you want, or attach it to shortcuts and automation if you like that kind of control. All three routes do the same job, so pick whichever matches the moment.</p>
+</section>
+
+<section style="margin-top:38px;">
+<h2 style="font-size:24px; font-weight:800; margin:0 0 14px; color:#141a2b;">🖥️ Devices and Setup Notes</h2>
+<p style="margin:0 0 14px;">abl-dualboot is aimed at handhelds that already boot both Android and a Linux-based system such as a SteamOS-style distribution, with the ROCKNIX bootloader in charge of startup. Devices from the AYN Odin family, Armada handhelds, and a range of Qualcomm-based retro consoles are the typical targets.</p>
+<ul style="margin:0 0 14px; padding-left:22px;">
+<li style="margin-bottom:9px;">A handheld that already boots two systems, or that you plan to set up that way.</li>
+<li style="margin-bottom:9px;">The ROCKNIX bootloader installed and working.</li>
+<li style="margin-bottom:9px;">A USB cable and a Windows PC for copying files.</li>
+<li style="margin-bottom:9px;">Enough free space for the app and plugin files, which are small.</li>
+<li style="margin-bottom:0;">Root access through APatch or KernelSU if you want the Android side to control boot targets.</li>
+</ul>
+<p style="margin:0;">If your device is not on the list it may still work. The safe approach is to back up anything important first, then test a single switch in each direction to confirm everything behaves the way you expect.</p>
+</section>
+
+<section style="margin-top:38px;">
+<h2 style="font-size:24px; font-weight:800; margin:0 0 14px; color:#141a2b;">🛠️ Troubleshooting</h2>
+<p style="margin:0 0 12px;"><strong>The device still starts the same system.</strong> The boot target may not have been written correctly. Open the app again, confirm the target shown on screen, and let the full restart finish before touching anything.</p>
+<p style="margin:0 0 12px;"><strong>The Quick Settings tile is missing.</strong> Android sometimes hides new tiles. Open the tile editor from the shade and drag the abl-dualboot tile into your active set.</p>
+<p style="margin:0 0 12px;"><strong>The Decky plugin does not appear.</strong> Restart the Linux session once after installing. Plugins usually show up after a fresh start of the interface.</p>
+<p style="margin:0 0 12px;"><strong>The handheld is not visible on Windows.</strong> Try a different USB port and a different cable. Some cables carry power only and cannot transfer files.</p>
+<p style="margin:0 0 12px;"><strong>A switch feels wrong afterwards.</strong> Boot back into the system that worked and check that the package you copied matches the one on the download page. A partially copied file is the most common cause of odd behaviour.</p>
+<p style="margin:0;">Visit this link to download the application again any time you need a fresh copy: <a href="https://github.com/khanh152010/abl-dualboot" style="color:#4f46e5; font-weight:600; text-decoration:none;">https://github.com/khanh152010/abl-dualboot</a></p>
+</section>
+
+</div>
 </body>
 </html>
